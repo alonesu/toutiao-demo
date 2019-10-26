@@ -1,8 +1,8 @@
 <template>
   <div class="cantiner">
     <el-card>
-      <img src="../../assets/images/logo_index.png" alt />
-      <el-form ref="form" :model="formData" :rules="loginRules">
+      <img class="logo_img" src="../../assets/images/logo_index.png" alt />
+      <el-form ref="formData" :model="formData" :rules="loginRules">
         <el-form-item prop="mobile">
           <el-input v-model="formData.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
@@ -18,6 +18,7 @@
         <el-button
           type="primary"
           style="display:block;width:100%;margin-top:20px"
+          @click="login"
         >立即登录</el-button>
       </el-form>
     </el-card>
@@ -55,7 +56,17 @@ export default {
     }
   },
   methods: {
-
+    login () {
+      // 获取表单组件shilling---调用校验函数
+      this.$refs['formData'].validate((valid) => {
+        if (valid) {
+          // 发请求
+          this.$http.post('/authorizations', this.formData).then(res => {
+            this.$router.push('/')
+          }).catch(() => {})
+        }
+      })
+    }
   }
 }
 </script>
@@ -77,7 +88,7 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-img {
+.logo_img {
   display: block;
   width: 200px;
   margin: 0 auto 30px;
