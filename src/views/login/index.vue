@@ -2,11 +2,11 @@
   <div class="cantiner">
     <el-card>
       <img src="../../assets/images/logo_index.png" alt />
-      <el-form ref="form" :model="formData">
-        <el-form-item>
-          <el-input v-model="formData.name" placeholder="请输入手机号"></el-input>
+      <el-form ref="form" :model="formData" :rules="loginRules">
+        <el-form-item prop="mobile">
+          <el-input v-model="formData.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="code">
           <el-input
             v-model="formData.code"
             style="width:240px;margin-right:5px"
@@ -14,44 +14,48 @@
           ></el-input>
           <el-button plain>发送验证码</el-button>
         </el-form-item>
-        <el-checkbox v-model="checked">我已阅读并同意用户协议和隐私政策</el-checkbox>
-        <el-button type="primary" @click="login" style="display:block;width:100%;margin-top:20px">立即登录</el-button>
+        <el-checkbox :value="true">我已阅读并同意用户协议和隐私政策</el-checkbox>
+        <el-button
+          type="primary"
+          style="display:block;width:100%;margin-top:20px"
+        >立即登录</el-button>
       </el-form>
     </el-card>
   </div>
 </template>
 <script>
-// <el-button :plain="true" @click="open2">成功</el-button>
 export default {
   data () {
+    // 校验手机号的函数
+    const checkMobile = (rule, value, callback) => {
+      // 通过校验逻辑判断成功失败
+      // 手机号格式：1开头 第二位3-8 9个数字结尾
+      if (/^1[3-9]\d{9}$/.test(value)) {
+        callback()
+      } else {
+        callback(new Error('手机号格式不正确'))
+      }
+    }
     return {
       formData: {
-        name: '',
-        code: ''
+        code: '',
+        mobile: ''
       },
-      checked: true
+      checked: true,
+      loginRules: {
+        mobile: [
+          { required: true, message: '请输入正确的手机号', trigger: 'blur' },
+          { validator: checkMobile, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入正确的验证码', trigger: 'blur' },
+          { len: 6, message: '验证码6个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
-    open3 () {
-      this.$message({
-        message: '警告哦，这是一条警告消息',
-        type: 'warning'
-      })
-    },
-    open2 () {
-      this.$message({
-        message: '恭喜你，这是一条成功消息',
-        type: 'success'
-      })
-    },
-    login () {
-      if (this.formData.name && this.formData.code) {
-        this.open2()
-      } else {
-        this.open3()
-      }
-    }
+
   }
 }
 </script>
