@@ -48,8 +48,8 @@
         <span class="text">江苏传智播客科技教育有限公司</span>
         <el-dropdown class="dropdown">
           <span class="el-dropdown-link">
-            <img src="../../assets/images/avatar.jpg" alt />
-            <span>unsername</span>
+            <img :src="userPhoto" alt />
+            <span>{{userName}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -66,16 +66,25 @@
 </template>
 
 <script>
+import local from '../../utils/local'
 export default {
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      userName: '',
+      userPhoto: ''
     }
   },
   methods: {
     open () {
       this.isOpen = !this.isOpen
     }
+  },
+  created () {
+    let { name, photo } = local.getUser()
+    this.userName = name
+    this.userPhoto = photo
+    // console.log(local.getUser())
   }
 }
 </script>
