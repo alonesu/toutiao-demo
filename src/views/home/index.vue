@@ -3,7 +3,7 @@
     <el-aside :width="isOpen ? '64px' : '200px' ">
       <div class="logo" :class="{logoSmall : isOpen}"></div>
       <el-menu
-        default-active="/"
+        :default-active="$route.path"
         class="el-menu-vertical-demo"
         background-color="#002033"
         text-color="#fff"
@@ -108,7 +108,6 @@ export default {
     let { name, photo } = local.getUser()
     this.userName = name
     this.userPhoto = photo
-    console.log(local.getUser())
   }
 }
 </script>
