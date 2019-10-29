@@ -58,12 +58,13 @@ export default {
   },
   methods: {
     login () {
-      // 获取表单组件shilling---调用校验函数
+      // 获取表单组件shilling---
       this.$refs['formData'].validate((valid) => {
         if (valid) {
           // 发请求
           this.$http.post('/authorizations', this.formData).then(res => {
             local.setUser(res.data.data)
+            console.log(res.data.data)
             this.$router.push('/')
           }).catch(() => {})
         }

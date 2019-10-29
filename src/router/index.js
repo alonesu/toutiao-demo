@@ -24,7 +24,7 @@ const router = new VueRouter({
           component: Welcome
         },
         {
-          path: 'article'
+          path: '/article'
         },
         {
           path: 'image'

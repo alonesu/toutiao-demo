@@ -46,15 +46,15 @@
       <el-header>
         <span @click="open" class="el-icon-s-fold icon"></span>
         <span class="text">江苏传智播客科技教育有限公司</span>
-        <el-dropdown class="dropdown">
+        <el-dropdown class="dropdown" @command='loginOut'>
           <span class="el-dropdown-link">
             <img :src="userPhoto" alt />
             <span>{{userName}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" command='0'>个人设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock" command='1'>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -66,7 +66,8 @@
 </template>
 
 <script>
-import local from '../../utils/local'
+import local from '@/utils/local'
+import router from '@/router'
 export default {
   data () {
     return {
@@ -78,13 +79,36 @@ export default {
   methods: {
     open () {
       this.isOpen = !this.isOpen
+    },
+    loginOut (command) {
+      if (command === '0') {
+        this.$message(command)
+      } else {
+        this.$confirm('确定要退出吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          local.delUser()
+          router.push('/login')
+          this.$message({
+            type: 'success',
+            message: '退出成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          })
+        })
+      }
     }
   },
   created () {
     let { name, photo } = local.getUser()
     this.userName = name
     this.userPhoto = photo
-    // console.log(local.getUser())
+    console.log(local.getUser())
   }
 }
 </script>
