@@ -2,6 +2,20 @@ import axios from 'axios'
 
 import local from '@/utils/local'
 import router from '@/router'
+import BIGINT from 'json-bigint'
+
+// `transformResponse` 在传递给 then/catch 前，允许修改响应数据
+//  transformResponse: [function (data) {
+//    // 对 data 进行任意转换处理
+//    return data;
+//  }],
+axios.defaults.transformResponse = function (data) {
+  try {
+    return BIGINT.parse(data)
+  } catch (error) {
+    return data
+  }
+}
 
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
 
