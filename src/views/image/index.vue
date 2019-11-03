@@ -16,6 +16,7 @@
           @click="dialogVisible = true"
         >添加素材</el-button>
       </div>
+      <!-- 素材列表 -->
       <div class="img_list">
         <div class="item" v-for="item in imagesList" :key="item.id">
           <img :src="item.url" />
