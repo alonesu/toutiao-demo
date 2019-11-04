@@ -7,6 +7,7 @@ import notFonund from '@/views/404'
 import Article from '@/views/article'
 import Image from '@/views/image'
 import Publish from '@/views/publish'
+import Comment from '@/views/comment'
 
 import local from '@/utils/local'
 
@@ -38,7 +39,8 @@ const router = new VueRouter({
           path: 'publish', component: Publish
         },
         {
-          path: 'comment'
+          path: 'comment',
+          component: Comment
         },
         {
           path: 'fans'
