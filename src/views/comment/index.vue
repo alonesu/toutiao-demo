@@ -63,9 +63,20 @@ export default {
       this.getArticle()
     },
     // 切换评论状态
-    async toggleCommentStatus (id, draft) {
-      await this.$http.put(`comments/status?article_id=${id}`, { allow_comment: draft })
-      this.getArticle()
+    toggleCommentStatus (id, draft) {
+      this.$confirm(draft ? '确定打开评论吗？' : '确定关闭评论吗, 是否继续?', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        await this.$http.put(`comments/status?article_id=${id}`, { allow_comment: draft })
+        this.$message({
+          type: 'success',
+          message: draft ? '打开评论成功!' : '关闭评论成功'
+        })
+        this.getArticle()
+      }).catch(() => {
+      })
     }
   }
 }
