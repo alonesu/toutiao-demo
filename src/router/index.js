@@ -9,6 +9,7 @@ import Image from '@/views/image'
 import Publish from '@/views/publish'
 import Comment from '@/views/comment'
 import Setting from '@/views/setting'
+import Fans from '@/views/fans'
 
 import local from '@/utils/local'
 
@@ -43,8 +44,10 @@ const router = new VueRouter({
           path: 'comment',
           component: Comment
         },
+        // 粉丝
         {
-          path: 'fans'
+          path: 'fans',
+          component: Fans
         },
         {
           path: 'setting',

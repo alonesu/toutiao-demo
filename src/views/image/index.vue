@@ -136,6 +136,12 @@ export default {
       this.imageUrl = res.data.url
       this.image = file
       //   await this.$http.post('user/images', { params: this.image })
+      // 提示
+      this.$message.success('上传成功')
+      window.setTimeout(() => {
+        this.dialogVisible = false
+        this.imageUrl = ''
+      }, 2000)
       this.getImages()
     },
     handlePictureCardPreview (file) {

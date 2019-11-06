@@ -83,7 +83,7 @@ export default {
     },
     loginOut (command) {
       if (command === '0') {
-        this.$message(command)
+        this.$router.push('/setting')
       } else {
         this.$confirm('确定要退出吗?', '提示', {
           confirmButtonText: '确定',
