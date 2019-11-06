@@ -68,6 +68,7 @@
 <script>
 import local from '@/utils/local'
 import router from '@/router'
+import eventBus from '@/eventBus'
 export default {
   data () {
     return {
@@ -108,6 +109,14 @@ export default {
     let { name, photo } = local.getUser()
     this.userName = name
     this.userPhoto = photo
+    // 更改用户名
+    eventBus.$on('changeName', (data) => {
+      this.userName = data
+    })
+    // 更改用户头像
+    eventBus.$on('changePhoto', (data) => {
+      this.userPhoto = data
+    })
   }
 }
 </script>

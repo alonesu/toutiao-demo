@@ -19,14 +19,15 @@
                   <el-input v-model="userInfo.email"></el-input>
               </el-form-item>
               <el-form-item>
-                  <el-button type="primary">保存设置</el-button>
+                  <el-button type="primary" @click="saveSetting">保存设置</el-button>
               </el-form-item>
           </el-form>
         </el-col>
         <el-col :span="12">
            <el-upload
             class="avatar-uploader"
-            action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+            action=""
+            :http-request="updatePhoto"
             :show-file-list="false"
             name="image"
           >
@@ -41,6 +42,8 @@
 </template>
 
 <script>
+import local from '@/utils/local'
+import eventBus from '@/eventBus'
 export default {
   data () {
     return {
@@ -62,6 +65,34 @@ export default {
       const { data: { data } } = await this.$http.get('user/profile')
       this.userInfo = data
     //   this.uploadImageUrl = data.photo
+    },
+    // 保存设置
+    async saveSetting () {
+      const { name, intro, email } = this.userInfo
+      const { data: { data } } = await this.$http.patch('user/profile', { name, intro, email })
+      // 提示
+      this.$message.success('保存成功')
+      // 修改本地信息
+      const user = local.getUser()
+      user.name = data.name
+      local.setUser(user)
+      // 修改home组件
+      eventBus.$emit('changeName', data.name)
+    },
+    // 保存头像
+    async updatePhoto ({ file }) {
+      const formdata = new FormData()
+      formdata.append('photo', file)
+      const { data: { data } } = await this.$http.patch('user/photo', formdata)
+      this.userInfo.photo = data.photo
+      // 提示
+      this.$message.success('上传成功')
+      // 修改本地信息
+      const user = local.getUser()
+      user.photo = data.photo
+      local.setUser(user)
+      // 修改home组件
+      eventBus.$emit('changePhoto', data.photo)
     }
   }
 }
